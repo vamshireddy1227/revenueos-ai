@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: ankane/pgvector:v0.5.1
+    container_name: revenueos_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: revenueos
+      POSTGRES_USER: revenueos
+      POSTGRES_PASSWORD: revenueos_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: revenueos_redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: revenueos_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://revenueos:revenueos_password@postgres:5432/revenueos
+      - REDIS_URL=redis://redis:6379/0
+      - JWT_SECRET=super-secret-key-change-in-production-revenueos-2026
+      - AI_PROVIDER=mock
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: revenueos_frontend
+    restart: always
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
