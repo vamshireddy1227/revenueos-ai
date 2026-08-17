@@ -3,13 +3,16 @@ from typing import List, Optional
 
 try:
     from pydantic_settings import BaseSettings
+    from pydantic import Field
 except ImportError:
     try:
-        from pydantic import BaseSettings
+        from pydantic import BaseSettings, Field
     except ImportError:
         from pydantic import BaseModel
         class BaseSettings(BaseModel):
             pass
+        def Field(*args, **kwargs):
+            return kwargs.get("default")
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "RevenueOS AI"
@@ -23,8 +26,10 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 24 hours
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
     
-    # Database (Defaults to SQLite for instant local runs, supports PostgreSQL)
-    DATABASE_URL: str = "sqlite:///./revenueos.db"
+    # Database: prefer DATABASE_URL from environment for Postgres/prod, else fall back to local SQLite for dev
+    DATABASE_URL: str = Field(
+        default_factory=lambda: os.getenv("DATABASE_URL", "sqlite:///./revenueos.db")
+    )
     
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
