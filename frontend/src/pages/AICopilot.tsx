@@ -118,7 +118,7 @@ export const AICopilot: React.FC = () => {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Ask Copilot anything (e.g. Which deals should I focus on today?)..."
-          className="flex-1 bg-slate-900 border border-slate-700/80 rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-purple-500 shadow-inner"
+          className="flex-1 bg-slate-900 border border-slate-700/80 rounded-xl px-4 py-3 text-xs text-white placeholder:text-slate-400 focus:outline-none focus:border-purple-500 shadow-inner caret-white"
         />
         <button
           type="submit"

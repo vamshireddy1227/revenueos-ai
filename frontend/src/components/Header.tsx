@@ -19,7 +19,7 @@ export const Header: React.FC = () => {
           <input
             type="text"
             placeholder="Search leads, deals, tickets, knowledge..."
-            className="w-full bg-slate-950/60 border border-slate-800 text-xs text-slate-200 pl-9 pr-4 py-2 rounded-lg focus:outline-none focus:border-blue-500 transition-colors placeholder:text-slate-500"
+            className="w-full bg-slate-950/60 border border-slate-800 text-xs text-white placeholder:text-slate-400 pl-9 pr-4 py-2 rounded-lg focus:outline-none focus:border-blue-500 transition-colors caret-white"
           />
         </div>
       </div>
